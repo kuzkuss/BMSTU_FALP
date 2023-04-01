@@ -1,0 +1,134 @@
+\chapter{Практические задания}
+
+\section{Задание №1}
+
+Написать функцию, которая принимает целое число и возвращает первое
+четное число, не меньшее аргумента.
+
+\begin{lstlisting}[language=Lisp]
+	(defun first-greater-even (num)
+		(if (evenp num) num (+ num 1)))
+\end{lstlisting}
+
+\section{Задание №2}
+
+Написать функцию, которая принимает число и возвращает число
+того же знака, но с модулем на 1 больше модуля аргумента.
+
+\begin{lstlisting}[language=Lisp]
+	(defun module-plus (num)
+		(+ num (if (> num 0) 1 -1)))
+\end{lstlisting}
+
+\section{Задание №3}
+
+Написать функцию, которая принимает два числа и возвращает
+список из этих чисел, расположенный по возрастанию.
+
+\begin{lstlisting}[language=Lisp]
+	(defun make-growing-list (a b)
+		(if (< a b) (list a b) (list b a)))
+\end{lstlisting}
+
+\section{Задание №4}
+
+Написать функцию, которая принимает три числа и возвращает Т только
+тогда, когда первое число расположено между вторым и третьим.
+
+\begin{lstlisting}[language=Lisp]
+	(defun is-between (a b c)
+		(or (and (> a b) (< a c)) (and (> a c) (< a b))))
+\end{lstlisting}
+
+\section{Задание №5}
+
+Каков результат вычисления следующих выражений?
+
+\begin{lstlisting}[language=Lisp]
+	(and 'fee 'fie 'foe)  => foe
+	(or nil 'fie 'foe) => fie
+	(and (equal 'abc 'abc) 'yes) => yes
+	(or 'fee 'fie 'foe) => fee
+	(and nil 'fie 'foe) => nil
+	(or (equal 'abc 'abc) 'yes) => T
+\end{lstlisting}
+
+\section{Задание №6}
+
+Написать предикат, который принимает два числа-аргумента и возвращает
+Т, если первое число не меньше второго.
+
+\begin{lstlisting}[language=Lisp]
+	(defun greaterp (a b)
+		(>= a b))
+\end{lstlisting}
+
+\section{Задание №7}
+
+Какой из следующих двух вариантов предиката ошибочен и почему?
+
+\begin{lstlisting}[language=Lisp]
+	(defun pred1 (x)
+		(and (numberp x) (plusp x)))
+
+	(defun pred2 (x)
+		(and (plusp x) (numberp x)))
+\end{lstlisting}
+
+Ошибочным является второй вариант, так как функция plusp принимает на
+вход один аргумент типа number, из-за чего аргументы, не являющиеся числами,
+будут вызывать ошибку. При этом в первом варианте, если при проверке,
+является ли аргумент числом, получится значение Nil, то and вернет его в
+качестве результата, не продолжая дальнейшие вычисления, а при передачи
+числа будет проведена проверка на положительность.
+
+\section{Задание №8}
+
+Решить задачу 4, используя для ее решения конструкции:
+только IF, только COND, только AND/OR.
+
+\begin{lstlisting}[language=Lisp]
+	;; if
+	(defun is-between-if (a b c)
+		(if (> a b)
+			(< a c)
+			
+			(if (< a b)
+				(> a c))))
+
+	;; cond
+	(defun is-between-cond (a b c)
+		(cond
+			((> a b) (< a c))
+			((< a b) (> a c))))
+
+	;; and/or
+	(defun is-between (a b c)
+		(or (and (> a b) (< a c)) (and (> a c) (< a b))))
+\end{lstlisting}
+
+\section{Задание №9}
+
+Переписать функцию how-alike, приведенную в лекции и использующую COND, используя только конструкции IF, AND/OR.
+
+\begin{lstlisting}[language=Lisp]
+	;; cond
+	(defun how_alike (x y)
+		(cond ((or (= x y) (equal x y)) 'the_same)
+			((and (oddp x) (oddp y)) 'both_odd)
+			((and (evenp x) (evenp y)) 'both_even)
+			(t 'difference) ) )
+	
+	;; if
+	(defun how-alike-if (x y)
+		(if (or (= x y) (equal x y)) 'the_same
+		(if (and (oddp x) (oddp y)) 'both_odd
+		(if (and (evenp x) (evenp y)) 'both_even 'difference))))
+
+	;; and/or
+	(defun how-alike-and-or (x y)
+		(or (and (or (= x y) (equal x y)) 'the_same)
+			(and (and (oddp x) (oddp y)) 'both_odd)
+			(and (and (evenp x) (evenp y)) 'both_even)
+			'difference))
+\end{lstlisting}
